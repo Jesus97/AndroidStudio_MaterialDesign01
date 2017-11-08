@@ -19,6 +19,8 @@ public class Material01 extends AppCompatActivity {
     private EditText campoNombre;
     private TextInputLayout controlCorreo;
     private EditText campoCorreo;
+    private TextInputLayout controlTelefono;
+    private EditText campoTelefono;
     private Button botonAceptar;
     private Button botonCancelar;
 
@@ -31,8 +33,10 @@ public class Material01 extends AppCompatActivity {
 
         campoNombre = (EditText) findViewById(R.id.campo_nombre);
         campoCorreo = (EditText) findViewById(R.id.campo_correo);
+        campoTelefono = (EditText) findViewById(R.id.campo_telefono);
         controlNombre = (TextInputLayout) findViewById(R.id.control_nombre);
         controlCorreo = (TextInputLayout) findViewById(R.id.control_correo);
+        controlTelefono = (TextInputLayout) findViewById(R.id.control_telefono);
         botonAceptar = (Button) findViewById(R.id.boton_aceptar);
         botonCancelar = (Button) findViewById(R.id.boton_cancelar);
 
@@ -79,6 +83,23 @@ public class Material01 extends AppCompatActivity {
             }
         });
 
+        campoTelefono.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                esTelefonoValido(String.valueOf(i));
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
     }
 
     private boolean esNombreValido(String nombre){
@@ -95,10 +116,20 @@ public class Material01 extends AppCompatActivity {
 
     private boolean esCorreoValido(String correo){
         if(!Patterns.EMAIL_ADDRESS.matcher(correo).matches()){
-            controlNombre.setError("ERROR EN CORREO");
+            controlCorreo.setError("ERROR EN CORREO");
             return false;
         }else{
-            controlNombre.setError(null);
+            controlCorreo.setError(null);
+        }
+        return true;
+    }
+
+    private boolean esTelefonoValido(String telefono){
+        if(!Patterns.PHONE.matcher(telefono).matches()){
+            controlTelefono.setError("ERROR EN TELEFONO");
+            return false;
+        }else{
+            controlTelefono.setError(null);
         }
         return true;
     }
@@ -106,9 +137,11 @@ public class Material01 extends AppCompatActivity {
     private void validarDatos(){
         String nombre = controlNombre.getEditText().getText().toString();
         String correo = controlCorreo.getEditText().getText().toString();
+        String telefono = controlTelefono.getEditText().getText().toString();
         boolean a = esNombreValido(nombre);
-        boolean b = esNombreValido(correo);
-        if(a&&b){
+        boolean b = esCorreoValido(correo);
+        boolean c = esTelefonoValido(telefono);
+        if(a&&b&&c){
             Toast.makeText(this,"REGISTRO CORRECTO",Toast.LENGTH_LONG).show();
         }
     }
